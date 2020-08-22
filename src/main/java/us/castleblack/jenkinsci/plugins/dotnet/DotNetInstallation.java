@@ -13,31 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package us.castleblack.jenkinsci.plugins.dotnet.tools;
+package us.castleblack.jenkinsci.plugins.dotnet;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.EnvVars;
 import hudson.Extension;
-import hudson.Functions;
-import hudson.Launcher;
 import hudson.model.EnvironmentSpecific;
 import hudson.model.Node;
 import hudson.model.TaskListener;
 import hudson.slaves.NodeSpecific;
-import hudson.tools.ToolDescriptor;
-import hudson.tools.ToolInstallation;
-import hudson.tools.ToolInstaller;
-import hudson.tools.ToolProperty;
+import hudson.tools.*;
 import jenkins.model.Jenkins;
-import jenkins.security.MasterToSlaveCallable;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
+import jenkins.security.MasterToSlaveCallable;
+import hudson.Launcher;
 
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,10 +44,8 @@ import java.util.List;
 public class DotNetInstallation extends ToolInstallation
         implements EnvironmentSpecific<DotNetInstallation>, NodeSpecific<DotNetInstallation>, Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @DataBoundConstructor
-    public DotNetInstallation(@Nonnull String name, @Nonnull String home, List<? extends ToolProperty<?>> properties) {
+    public DotNetInstallation(String name, String home, List<? extends ToolProperty<?>> properties) {
         super(name, home, properties);
     }
 
@@ -93,15 +86,27 @@ public class DotNetInstallation extends ToolInstallation
     @Symbol("dotnet")
     public static class DescriptorImpl extends ToolDescriptor<DotNetInstallation> {
 
+        public DescriptorImpl() {
+        }
+
         @Nonnull
         @Override
         public String getDisplayName() {
-            return ".NET";
+            return Messages.Installation_DisplayName();
         }
 
         @Override
-        public List<? extends ToolInstaller> getDefaultInstallers() {
-            return Collections.singletonList(new DotNetInstaller(null));
+        public DotNetInstallation[] getInstallations() {
+            return getDotNetDescriptor().getInstallations();
+        }
+
+        @Override
+        public void setInstallations(DotNetInstallation... installations) {
+            getDotNetDescriptor().setInstallations(installations);
+        }
+
+        private static DotNetBuilder.DescriptorImpl getDotNetDescriptor() {
+            return Jenkins.get().getDescriptorByType(DotNetBuilder.DescriptorImpl.class);
         }
     }
 }

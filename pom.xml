@@ -13,7 +13,7 @@
     <artifactId>dotnet-jenkins-plugin</artifactId>
 
     <name>.NET Plugin</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <inceptionYear>2020</inceptionYear>
 
@@ -46,7 +46,6 @@
         <java.level>8</java.level>
         <jenkins.version>2.121.1</jenkins.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <workflow-jenkins-plugin.version>1.4</workflow-jenkins-plugin.version>
         <plugin.webapp.directory>${project.build.sourceDirectory}/../webapp</plugin.webapp.directory>
     </properties>
 
@@ -63,23 +62,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${plugin.webapp.directory}</directory>
-                            <includes>
-                                <include>js/libs/**/*</include>
-                            </includes>
-                            <excludes>
-                                <exclude>js/libs/tipped.js</exclude>
-                            </excludes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -112,24 +94,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-digester3</artifactId>
             <version>3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-job</artifactId>
-            <version>${workflow-jenkins-plugin.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-cps</artifactId>
-            <version>${workflow-jenkins-plugin.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-basic-steps</artifactId>
-            <version>${workflow-jenkins-plugin.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
